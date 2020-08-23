@@ -35,7 +35,7 @@ class CurrentWeatherFragment : Fragment() {
         // : Use the ViewModel
         val apiService = WeatherApiService()
         GlobalScope.launch(Dispatchers.Main) {
-            //on androd you cnaonly update the state of the ui
+            //on android you can only update the state of the ui
             // only from the main thread
             val currentWeatherResponse = apiService.
             getCurrentWeather("Mexico%20City").await()
