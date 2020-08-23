@@ -25,6 +25,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    //this is for error
+    //java.lang.BootstrapMethodError: Exception from call site #4 bootstrap method ,
+    // awhen initializing Retrofit
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
