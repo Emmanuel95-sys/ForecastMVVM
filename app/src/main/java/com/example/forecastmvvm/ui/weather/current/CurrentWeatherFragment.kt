@@ -1,13 +1,17 @@
 package com.example.forecastmvvm.ui.weather.current
 
-import androidx.lifecycle.ViewModelProviders
+
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.forecastmvvm.R
-import com.example.forecastmvvm.data.WeatherApiService
+import com.example.forecastmvvm.data.network.ConnectivityInterceptorImpl
+import com.example.forecastmvvm.data.network.WeatherApiService
+import com.example.forecastmvvm.data.network.WeatherNetworkDataSourceImpl
 import kotlinx.android.synthetic.main.current_weather_fragment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -31,15 +35,20 @@ class CurrentWeatherFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(CurrentWeatherViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(CurrentWeatherViewModel::class.java)
         // : Use the ViewModel
-        val apiService = WeatherApiService()
+        val apiService = WeatherApiService(ConnectivityInterceptorImpl(this.requireContext()))
+        val weatherNetworkDataSource = WeatherNetworkDataSourceImpl(apiService)
+
+        weatherNetworkDataSource.downloadedCurrentWeather.observe(viewLifecycleOwner, Observer {
+            tv_current_weather.text = it.toString()
+        })
+
         GlobalScope.launch(Dispatchers.Main) {
             //on android you can only update the state of the ui
             // only from the main thread
-            val currentWeatherResponse = apiService.
-            getCurrentWeather("Mexico%20City","m").await()
-            tv_current_weather.setText(currentWeatherResponse.currentWeatherEntry.toString())
+            weatherNetworkDataSource.fetchCurrentWeather("Mexico%City","f")
+
         }
     }
 

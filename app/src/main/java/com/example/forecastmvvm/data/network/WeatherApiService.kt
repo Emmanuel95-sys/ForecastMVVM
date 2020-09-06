@@ -1,4 +1,4 @@
-package com.example.forecastmvvm.data
+package com.example.forecastmvvm.data.network
 
 import android.util.Log
 import com.example.forecastmvvm.data.network.response.CurrentWeatherResponse
@@ -28,7 +28,9 @@ interface WeatherApiService {
     ): Deferred<CurrentWeatherResponse>
 
     companion object{
-        operator fun invoke(): WeatherApiService{
+        operator fun invoke(
+            connectivityInterceptor: ConnectivityInterceptor
+        ): WeatherApiService {
             //put api key in every single call
             val requestInterceptor = Interceptor{ chain ->
                 val url = chain.request()
@@ -46,6 +48,7 @@ interface WeatherApiService {
             }
             val okHttpClient = OkHttpClient.Builder()
                 .addInterceptor(requestInterceptor)
+                .addInterceptor(connectivityInterceptor)
                 .build()
 
             return Retrofit.Builder()
