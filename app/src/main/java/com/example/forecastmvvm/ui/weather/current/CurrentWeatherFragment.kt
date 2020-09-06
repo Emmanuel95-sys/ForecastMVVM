@@ -38,7 +38,7 @@ class CurrentWeatherFragment : Fragment() {
             //on android you can only update the state of the ui
             // only from the main thread
             val currentWeatherResponse = apiService.
-            getCurrentWeather("Mexico%20City").await()
+            getCurrentWeather("Mexico%20City","m").await()
             tv_current_weather.setText(currentWeatherResponse.currentWeatherEntry.toString())
         }
     }

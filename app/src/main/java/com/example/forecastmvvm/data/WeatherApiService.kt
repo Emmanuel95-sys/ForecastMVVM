@@ -22,7 +22,8 @@ interface WeatherApiService {
     //a factory call adapter
     @GET("current")
     fun getCurrentWeather(
-        @Query("query") location: String //,
+        @Query("query") location: String ,
+        @Query("units")units: String//,
         //@Query("language") languageCode: String
     ): Deferred<CurrentWeatherResponse>
 
