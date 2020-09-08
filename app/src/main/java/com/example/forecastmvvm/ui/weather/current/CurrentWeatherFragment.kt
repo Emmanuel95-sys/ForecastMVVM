@@ -41,20 +41,26 @@ class CurrentWeatherFragment : Fragment(), KodeinAware {
         viewModel = ViewModelProvider(this, viewModelFactory)
             .get(CurrentWeatherViewModel::class.java)
 
+        bindUI()
         // : Use the ViewModel
-        val apiService = WeatherApiService(ConnectivityInterceptorImpl(this.requireContext()))
-        val weatherNetworkDataSource = WeatherNetworkDataSourceImpl(apiService)
+//        val apiService = WeatherApiService(ConnectivityInterceptorImpl(this.requireContext()))
+//        val weatherNetworkDataSource = WeatherNetworkDataSourceImpl(apiService)
+//
+//        weatherNetworkDataSource.downloadedCurrentWeather.observe(viewLifecycleOwner, Observer {
+//            tv_current_weather.text = it.toString()
+//        })
+//
+//        GlobalScope.launch(Dispatchers.Main) {
+//            //on android you can only update the state of the ui
+//            // only from the main thread
+//            weatherNetworkDataSource.fetchCurrentWeather("Mexico%City","f")
+//
+//        }
 
-        weatherNetworkDataSource.downloadedCurrentWeather.observe(viewLifecycleOwner, Observer {
-            tv_current_weather.text = it.toString()
-        })
 
-        GlobalScope.launch(Dispatchers.Main) {
-            //on android you can only update the state of the ui
-            // only from the main thread
-            weatherNetworkDataSource.fetchCurrentWeather("Mexico%City","f")
-
-        }
     }
 
+    private fun bindUI() = GlobalScope.launch{
+        val currentWeather = viewModel.weather.await()
+    }.cancel()
 }
