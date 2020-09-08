@@ -12,6 +12,7 @@ import com.example.forecastmvvm.R
 import com.example.forecastmvvm.data.network.ConnectivityInterceptorImpl
 import com.example.forecastmvvm.data.network.WeatherApiService
 import com.example.forecastmvvm.data.network.WeatherNetworkDataSourceImpl
+import com.example.forecastmvvm.ui.base.ScopeFragment
 import kotlinx.android.synthetic.main.current_weather_fragment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -21,7 +22,7 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
 
-class CurrentWeatherFragment : Fragment(), KodeinAware {
+class CurrentWeatherFragment : ScopeFragment(), KodeinAware {
     override val kodein by closestKodein()
     private val viewModelFactory: CurrentWeatherViewModelFactory by instance()
 
@@ -60,7 +61,7 @@ class CurrentWeatherFragment : Fragment(), KodeinAware {
 
     }
 
-    private fun bindUI() = GlobalScope.launch{
+    private fun bindUI() = launch{
         val currentWeather = viewModel.weather.await()
     }.cancel()
 }
