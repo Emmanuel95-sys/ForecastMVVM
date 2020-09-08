@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.forecastmvvm.data.repository.ForecastRepository
 
 
-class CurrentWeatherRepository(
+class CurrentWeatherViewModelFactory(
     private val forecastRepository: ForecastRepository
 ): ViewModelProvider.NewInstanceFactory(){
     @Suppress("UNCHECKED_CAST")

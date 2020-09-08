@@ -16,13 +16,15 @@ import kotlinx.android.synthetic.main.current_weather_fragment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.kodein.di.Kodein
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.x.closestKodein
+import org.kodein.di.generic.instance
 
-class CurrentWeatherFragment : Fragment() {
+class CurrentWeatherFragment : Fragment(), KodeinAware {
+    override val kodein by closestKodein()
+    private val viewModelFactory: CurrentWeatherViewModelFactory by instance()
 
-    companion object {
-        fun newInstance() =
-            CurrentWeatherFragment()
-    }
 
     private lateinit var viewModel: CurrentWeatherViewModel
 
@@ -35,7 +37,10 @@ class CurrentWeatherFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(CurrentWeatherViewModel::class.java)
+
+        viewModel = ViewModelProvider(this, viewModelFactory)
+            .get(CurrentWeatherViewModel::class.java)
+
         // : Use the ViewModel
         val apiService = WeatherApiService(ConnectivityInterceptorImpl(this.requireContext()))
         val weatherNetworkDataSource = WeatherNetworkDataSourceImpl(apiService)
