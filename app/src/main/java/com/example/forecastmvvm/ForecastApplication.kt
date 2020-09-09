@@ -15,6 +15,7 @@ import org.kodein.di.generic.instance
 import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
 
+
 class ForecastApplication : Application(), KodeinAware {
     override val kodein = Kodein.lazy {
         import(androidXModule(this@ForecastApplication))
@@ -22,6 +23,8 @@ class ForecastApplication : Application(), KodeinAware {
         bind() from singleton { ForecastDatabase(instance()) }
         bind() from singleton { (instance<ForecastDatabase>().currentWeatherDao()) }
         bind<ConnectivityInterceptor>() with singleton { ConnectivityInterceptorImpl(instance())}
+        //be extremely careful with kodein
+        bind() from singleton { WeatherApiService(instance()) }
         bind<WeatherNetworkDataSource>() with singleton {WeatherNetworkDataSourceImpl(instance())}
         bind<ForecastRepository>() with singleton {ForecastRepositoryImpl(instance(), instance())}
         bind() from provider { CurrentWeatherViewModelFactory(instance()) }

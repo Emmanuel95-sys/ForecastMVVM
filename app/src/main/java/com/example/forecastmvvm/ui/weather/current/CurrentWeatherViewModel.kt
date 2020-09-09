@@ -13,7 +13,6 @@ class CurrentWeatherViewModel(
         get() = unitSystem == UnitSystem.METRIC
 
     val weather by lazyDeferred {
-        forecastRepository.getCurrentWeather(isMetric)
+        forecastRepository.getCurrentWeatherFromLocalDb()
     }
-    
 }

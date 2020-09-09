@@ -23,7 +23,7 @@ class ForecastRepositoryImpl(
         }
     }
 
-    override suspend fun getCurrentWeather(isMetric: Boolean): LiveData<CurrentWeatherEntry> {
+    override suspend fun getCurrentWeatherFromLocalDb(): LiveData<CurrentWeatherEntry> {
         //with context returns a value
         return withContext(Dispatchers.IO){
             initWeatherData()
@@ -50,7 +50,7 @@ class ForecastRepositoryImpl(
 
     private suspend fun fetchCurrentWeather(){
         weatherNetworkDataSource.fetchCurrentWeather(
-            "Mexico%20City", "m"
+            "Mexico%20City", "en"
         )
     }
 

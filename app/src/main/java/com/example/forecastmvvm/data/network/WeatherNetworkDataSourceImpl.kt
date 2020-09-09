@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.forecastmvvm.data.network.response.CurrentWeatherResponse
 import com.example.forecastmvvm.internal.NoConnectivityException
+import java.lang.Exception
 
 class WeatherNetworkDataSourceImpl(
     private val weatherApiService: WeatherApiService
@@ -14,15 +15,18 @@ class WeatherNetworkDataSourceImpl(
     override val downloadedCurrentWeather: LiveData<CurrentWeatherResponse>
         get() = _downloadedCurrentWeather
 
-    override suspend fun fetchCurrentWeather(location: String, units: String) {
+    override suspend fun fetchCurrentWeather(location: String, languageCode: String) {
         try{
             val fetchedCurrentWeather = weatherApiService
-                .getCurrentWeather(location, units)
+                .getCurrentWeather(location, languageCode)
                 .await()
             _downloadedCurrentWeather.postValue(fetchedCurrentWeather)
         }
         catch (e: NoConnectivityException){
             Log.e("Connectivity", "No internet connection", e)
+        }
+        catch (e: Exception){
+            Log.e("Connectivity","Exception", e)
         }
     }
 }

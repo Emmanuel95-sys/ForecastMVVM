@@ -9,6 +9,6 @@ interface WeatherNetworkDataSource {
 
     suspend fun fetchCurrentWeather(
         location: String ,
-        units: String
+        languageCode: String
     )
 }

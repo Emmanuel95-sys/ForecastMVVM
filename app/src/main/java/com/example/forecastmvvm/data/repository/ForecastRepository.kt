@@ -4,5 +4,5 @@ import androidx.lifecycle.LiveData
 import com.example.forecastmvvm.data.db.entity.CurrentWeatherEntry
 
 interface ForecastRepository {
-    suspend fun getCurrentWeather(isMetric: Boolean): LiveData<CurrentWeatherEntry>
+    suspend fun getCurrentWeatherFromLocalDb(): LiveData<CurrentWeatherEntry>
 }

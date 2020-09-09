@@ -14,17 +14,16 @@ import retrofit2.http.Query
 const val API_KEY = "690abb47475a2b29c2c8af386452237b"
 const val BASE_URL = "http://api.weatherstack.com/"
 /**
- * query URL: http://api.weatherstack.com/ current? access_key=690abb47475a2b29c2c8af386452237b & query=Mexico %20 City
+ * query URL: http://api.weatherstack.com/ current? access_key= 690abb47475a2b29c2c8af386452237b &query=Mexico %20 City
  * **/
 
 interface WeatherApiService {
-    //because we are using deferred as areturn type we need to specify
+    //because we are using deferred as a return type we need to specify
     //a factory call adapter
     @GET("current")
     fun getCurrentWeather(
         @Query("query") location: String ,
-        @Query("units")units: String//,
-        //@Query("language") languageCode: String
+        @Query("lang") languageCode: String = "en"
     ): Deferred<CurrentWeatherResponse>
 
     companion object{
@@ -51,13 +50,15 @@ interface WeatherApiService {
                 .addInterceptor(connectivityInterceptor)
                 .build()
 
-            return Retrofit.Builder()
+            val response = Retrofit.Builder()
                 .client(okHttpClient)
                 .baseUrl(BASE_URL)
                 .addCallAdapterFactory(CoroutineCallAdapterFactory())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(WeatherApiService::class.java)
+            response.toString()
+            return response
         }
     }
 
