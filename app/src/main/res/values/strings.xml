@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ForecastMVVM</string>
+    <string name="loading">Loading</string>
+    <string name="weather_icon">weather icon</string>
 </resources>
