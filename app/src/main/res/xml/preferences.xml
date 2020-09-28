@@ -14,7 +14,7 @@
             android:key="CUSTOM_LOCATION"
             android:title="Location"
             android:summary="The location for which the weather is displayed"
-            android:defaultValue="Mexico%City"
+            android:defaultValue="Mexico%20City"
             android:dependency="USE_DEVICE_LOCATION"
             />
     </PreferenceCategory>
