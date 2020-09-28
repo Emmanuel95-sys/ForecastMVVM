@@ -40,13 +40,15 @@ class CurrentWeatherFragment : ScopeFragment(), KodeinAware {
     @SuppressLint("FragmentLiveDataObserve")
     private fun bindUI() = launch{
         val currentWeather = viewModel.weather.await()
+        val weatherLocation = viewModel.location.await()
+
         currentWeather.observe(this@CurrentWeatherFragment, Observer {
             //observing data from db, db doesn't
             //currently have anything stored
+            //so we use a null check to avoid problems
             if(it == null) return@Observer
             group_loading.visibility = View.GONE
             it
-            updateLocation("Mexico City")
             updateDateToToday()
             updateTemperatures(it.temperature, it.feelslike)
             updateCondition(it.weatherDescriptions[0])
@@ -56,6 +58,11 @@ class CurrentWeatherFragment : ScopeFragment(), KodeinAware {
             GlideApp.with(this@CurrentWeatherFragment)
                 .load(it.weatherIcons[0])
                 .into(imageView_condition_icon)
+        })
+
+        weatherLocation.observe(this@CurrentWeatherFragment, Observer {location ->
+            if(location == null) return@Observer
+            updateLocation(location.name)
         })
     }
 

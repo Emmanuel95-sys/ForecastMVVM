@@ -17,4 +17,8 @@ class CurrentWeatherViewModel(
     val weather by lazyDeferred {
         forecastRepository.getCurrentWeatherFromLocalDb()
     }
+
+    val location by lazyDeferred {
+        forecastRepository.getWeatherLocationFromLocalDb()
+    }
 }
